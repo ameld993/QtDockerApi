@@ -5,25 +5,31 @@
 
 class QNetworkReply;
 
-namespace dockerApi {
+namespace docker {
 
 class DockerReply : public QObject
 {
     Q_OBJECT
-
-    QString m_errorString;
-
 public:
     explicit DockerReply(QNetworkReply *reply, QObject *parent = nullptr);
 
     QString getErrorStr() const;
+    int getStatusCode() const;
+
+    QByteArray data() const;
 
 signals:
     void replyReceived();
     void errorReceived(const QString &errorStr);
 
-private slots:
-    virtual void parseReceivedData(const QByteArray &data);
+private:
+    virtual void onReplyReceived();
+
+protected:
+    QString m_errorString;
+    int m_statusCode;
+
+    QByteArray m_data;
 };
 
 }

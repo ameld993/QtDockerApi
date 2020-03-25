@@ -1,0 +1,13 @@
+ 
+[Unit]
+Description=Docker Daemon Engine
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=2
+User=root
+ExecStart=/usr/bin/dockerd -H unix:///var/run/docker.sock -H tcp://127.0.0.1:2375
+
+[Install]
+WantedBy=multi-user.target

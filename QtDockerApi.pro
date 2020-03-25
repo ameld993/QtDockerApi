@@ -9,15 +9,20 @@ OBJECTS_DIR         = obj
 MOC_DIR             = moc
 
 HEADERS += \
-    dockerapi.h \
-    dockerrequestgenerator.h \
-    dockerreply.h
+    DockerEngine.h \
+    DockerImage.h \
+    DockerImageList.h \
+    DockerImageListReply.h \
+    DockerReply.h \
+    DockerRequestGenerator.h
 
 SOURCES += \
-    dockerapi.cpp \
-    dockerrequestgenerator.cpp \
-    dockerreply.cpp
-
+    DockerEngine.cpp \
+    DockerImage.cpp \
+    DockerImageList.cpp \
+    DockerImageListReply.cpp \
+    DockerReply.cpp \
+    DockerRequestGenerator.cpp
 
 unix{
     libs.path = /usr/local/lib

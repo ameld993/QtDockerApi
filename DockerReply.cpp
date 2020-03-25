@@ -1,9 +1,9 @@
-#include "dockerreply.h"
+#include "DockerReply.h"
 
 #include <QNetworkReply>
 #include <QString>
 
-dockerApi::DockerReply::DockerReply(QNetworkReply *reply, QObject *parent) : QObject(parent)
+docker::DockerReply::DockerReply(QNetworkReply *reply, QObject *parent) : QObject(parent)
 {
     if (reply == nullptr) {
         return;
@@ -12,7 +12,11 @@ dockerApi::DockerReply::DockerReply(QNetworkReply *reply, QObject *parent) : QOb
     reply->setParent(this);
 
     connect(reply, &QNetworkReply::readyRead, [=](){
-        parseReceivedData(reply->readAll());
+        m_data = reply->readAll();
+        m_errorString.clear();
+        m_statusCode = reply->error();
+        onReplyReceived();
+        emit replyReceived();
         reply->deleteLater();
     });
 
@@ -20,20 +24,37 @@ dockerApi::DockerReply::DockerReply(QNetworkReply *reply, QObject *parent) : QOb
         QString errorStrTmp = "DockerReply Code [%1] Description: %2";
         QString errorStr = errorStrTmp.arg(QString::number(code)).arg(reply->errorString());
 
+        m_errorString = errorStr;
+        m_statusCode = code;
+
         emit errorReceived(errorStr);
         reply->deleteLater();
     });
 }
 
 
-QString dockerApi::DockerReply::getErrorStr() const
+QString docker::DockerReply::getErrorStr() const
 {
     return m_errorString;
 }
 
 
-void dockerApi::DockerReply::parseReceivedData(const QByteArray &data)
+int docker::DockerReply::getStatusCode() const
 {
-    Q_UNUSED(data)
+    return m_statusCode;
 }
+
+
+QByteArray docker::DockerReply::data() const
+{
+    return m_data;
+}
+
+
+void docker::DockerReply::onReplyReceived()
+{
+
+}
+
+
 

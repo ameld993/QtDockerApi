@@ -1,7 +1,7 @@
-#include "dockerrequestgenerator.h"
+#include "DockerRequestGenerator.h"
 
 
-QNetworkRequest dockerApi::dockerRequestUrl(const QString &path, const QUrlQuery &query)
+QNetworkRequest docker::dockerRequestUrl(const QString &path, const QUrlQuery &query)
 {
     QUrl url(DOCKER_DAEMON_URL);
     url.setPath(path);
@@ -14,22 +14,20 @@ QNetworkRequest dockerApi::dockerRequestUrl(const QString &path, const QUrlQuery
 }
 
 
-QNetworkRequest dockerApi::dockerRequestUrl(const QString &path)
-{
-    QUrl url(DOCKER_DAEMON_URL);
-    url.setPath(path);
 
-    return QNetworkRequest(url);
-}
-
-
-QNetworkRequest dockerApi::getContainterList(QUrlQuery query)
+QNetworkRequest docker::getContainterList(QUrlQuery query)
 {
     return dockerRequestUrl("/containers/json", query);
 }
 
 
-QNetworkRequest dockerApi::inspectContainer(const QString containerId, QUrlQuery query)
+QNetworkRequest docker::createContainer(QUrlQuery query)
+{
+    return dockerRequestUrl("/containers/create", query);
+}
+
+
+QNetworkRequest docker::inspectContainer(const QString containerId, QUrlQuery query)
 {
     QString pathTmp = "/containers/%1/json";
     QString path = pathTmp.arg(containerId);
@@ -38,7 +36,7 @@ QNetworkRequest dockerApi::inspectContainer(const QString containerId, QUrlQuery
 }
 
 
-QNetworkRequest dockerApi::listRunningProcessesInContainer(const QString containerId, QUrlQuery query)
+QNetworkRequest docker::listRunningProcessesInContainer(const QString containerId, QUrlQuery query)
 {
     QString pathTmp = "/containers/%1/top";
     QString path = pathTmp.arg(containerId);
@@ -47,7 +45,7 @@ QNetworkRequest dockerApi::listRunningProcessesInContainer(const QString contain
 }
 
 
-QNetworkRequest dockerApi::startContainter(const QString containerId, QUrlQuery query)
+QNetworkRequest docker::startContainter(const QString containerId, QUrlQuery query)
 {
     QString pathTmp = "/containers/%1/start";
     QString path = pathTmp.arg(containerId);
@@ -56,7 +54,7 @@ QNetworkRequest dockerApi::startContainter(const QString containerId, QUrlQuery 
 }
 
 
-QNetworkRequest dockerApi::stopContainer(const QString containerId, QUrlQuery query)
+QNetworkRequest docker::stopContainer(const QString containerId, QUrlQuery query)
 {
     QString pathTmp = "/containers/%1/stop";
     QString path = pathTmp.arg(containerId);
@@ -65,7 +63,7 @@ QNetworkRequest dockerApi::stopContainer(const QString containerId, QUrlQuery qu
 }
 
 
-QNetworkRequest dockerApi::restartContainer(const QString containerId, QUrlQuery query)
+QNetworkRequest docker::restartContainer(const QString containerId, QUrlQuery query)
 {
     QString pathTmp = "/containers/%1/restart";
     QString path = pathTmp.arg(containerId);
@@ -74,7 +72,7 @@ QNetworkRequest dockerApi::restartContainer(const QString containerId, QUrlQuery
 }
 
 
-QNetworkRequest dockerApi::killContainter(const QString containerId, QUrlQuery query)
+QNetworkRequest docker::killContainter(const QString containerId, QUrlQuery query)
 {
     QString pathTmp = "/containers/%1/kill";
     QString path = pathTmp.arg(containerId);
@@ -83,7 +81,7 @@ QNetworkRequest dockerApi::killContainter(const QString containerId, QUrlQuery q
 }
 
 
-QNetworkRequest dockerApi::pauseContainer(const QString containerId)
+QNetworkRequest docker::pauseContainer(const QString containerId)
 {
     QString pathTmp = "/containers/%1/pause";
     QString path = pathTmp.arg(containerId);
@@ -92,7 +90,7 @@ QNetworkRequest dockerApi::pauseContainer(const QString containerId)
 }
 
 
-QNetworkRequest dockerApi::unpauseContainer(const QString containerId)
+QNetworkRequest docker::unpauseContainer(const QString containerId)
 {
     QString pathTmp = "/containers/%1/unpause";
     QString path = pathTmp.arg(containerId);
@@ -101,7 +99,7 @@ QNetworkRequest dockerApi::unpauseContainer(const QString containerId)
 }
 
 
-QNetworkRequest dockerApi::removeContainer(const QString containerId, QUrlQuery query)
+QNetworkRequest docker::removeContainer(const QString containerId, QUrlQuery query)
 {
     QString pathTmp = "/containers/%1";
     QString path = pathTmp.arg(containerId);
@@ -110,8 +108,13 @@ QNetworkRequest dockerApi::removeContainer(const QString containerId, QUrlQuery 
 }
 
 
-QNetworkRequest dockerApi::getImageList(QUrlQuery query)
+QNetworkRequest docker::getImageList(QUrlQuery query)
 {
     return dockerRequestUrl("/images/json", query);
 }
 
+
+QNetworkRequest docker::builImage(QUrlQuery query)
+{
+    return dockerRequestUrl("/build", query);
+}

@@ -6,7 +6,7 @@
 #include <QVariant>
 #include <QMap>
 
-namespace dockerApi
+namespace docker
 {
 
 #ifndef DOCKER_DAEMON_URL
@@ -15,9 +15,7 @@ namespace dockerApi
 
 typedef QMap<QString, QVariant> QueryParameters ;
 
-QNetworkRequest dockerRequestUrl(const QString &path, const QUrlQuery &query);
-QNetworkRequest dockerRequestUrl(const QString &path);
-
+QNetworkRequest dockerRequestUrl(const QString &path, const QUrlQuery &query = QUrlQuery());
 
 /**
  * @brief getContainterList - Returns a list of containers.
@@ -28,6 +26,14 @@ QNetworkRequest dockerRequestUrl(const QString &path);
  * @return
  */
 QNetworkRequest getContainterList(QUrlQuery query = QUrlQuery());
+
+/**
+ * @brief createContainer
+ * @ref https://docs.docker.com/engine/api/v1.40/#operation/ContainerCreate
+ * @param name
+ * @return
+ */
+QNetworkRequest createContainer(QUrlQuery query = QUrlQuery());
 
 /**
  * @brief inspectContainer - Return low-level information about a container.
@@ -113,7 +119,11 @@ QNetworkRequest removeContainer(const QString containerId, QUrlQuery query = QUr
  */
 QNetworkRequest getImageList(QUrlQuery query = QUrlQuery());
 
-
+/**
+ * @brief builImage
+ * @param query
+ * @return
+ */
 QNetworkRequest builImage(QUrlQuery query = QUrlQuery());
 
 };
