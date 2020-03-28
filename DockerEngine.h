@@ -1,17 +1,21 @@
 #ifndef DOCKEENGINE_H
 #define DOCKEENGINE_H
 
-#include "DockerReply.h"
-
-#include <QByteArray>
-#include <QNetworkAccessManager>
-#include <QUrlQuery>
 #include <QObject>
+#include <QUrlQuery>
+
+class QNetworkReply;
+class QNetworkRequest;
+class QNetworkAccessManager;
 
 namespace docker {
 
     class DockerImageListReply;
+    class DockerReply;
 
+    /**
+     * @brief The DockerEngine class is a singelton
+     */
     class DockerEngine : public QObject
     {
         Q_OBJECT
@@ -41,17 +45,25 @@ namespace docker {
          */
         DockerImageListReply* getDockerImages(QUrlQuery query = QUrlQuery());
 
-    signals:
+        /**
+         * @brief executeGetReq
+         * @param req
+         * @return
+         */
+        QNetworkReply *executeGetReq(const QNetworkRequest &req);
 
-    public slots:
-
+        /**
+         * @brief executePosReq
+         * @param req
+         * @param posBody
+         * @return
+         */
+        QNetworkReply *executePosReq(const QNetworkRequest &req, QByteArray &posBody);
+        QNetworkReply *execureDelReq(const QNetworkRequest &req);
 
     private:
         explicit DockerEngine(QObject *parent = nullptr);
 
-        QNetworkReply *executeGetReq(const QNetworkRequest &req);
-        QNetworkReply *executePosReq(const QNetworkRequest &req, QByteArray &posBody);
-        QNetworkReply *execureDelReq(const QNetworkRequest &req);
     };
 
 }

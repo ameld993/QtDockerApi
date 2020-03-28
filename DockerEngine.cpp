@@ -1,30 +1,35 @@
 #include "DockerEngine.h"
 #include "DockerReply.h"
-#include "DockerRequestGenerator.h"
-
 #include "DockerImageListReply.h"
+#include "DockerRequestGenerator.h"
 
 #include <QNetworkReply>
 #include <QAuthenticator>
+#include <QByteArray>
+#include <QNetworkAccessManager>
 
-static docker::DockerEngine *static_docker_engine_ = nullptr;
+namespace docker {
+    static DockerEngine* _Static_Docker_Engine_ = nullptr;
+}
 
 docker::DockerEngine::DockerEngine(QObject *parent) : QObject(parent)
 {
     m_networkManager = new QNetworkAccessManager(this);
 
     connect(m_networkManager, &QNetworkAccessManager::authenticationRequired, [=](QNetworkReply *repy, QAuthenticator *auth){
+        Q_UNUSED(repy)
+        Q_UNUSED(auth)
         qDebug() << "authenticationRequired!";
     });
 }
 
 docker::DockerEngine *docker::DockerEngine::instance()
 {
-    if (static_docker_engine_ == nullptr) {
-        static_docker_engine_ = new DockerEngine;
+    if (_Static_Docker_Engine_ == nullptr) {
+        _Static_Docker_Engine_ = new DockerEngine;
     }
 
-    return static_docker_engine_;
+    return _Static_Docker_Engine_;
 }
 
 

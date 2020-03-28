@@ -2,22 +2,11 @@
 #define DOCKERIMAGELISTREPLY_H
 
 #include "DockerReply.h"
+#include "DockerImage.h"
 
 #include <QVector>
 
-
 namespace docker {
-
-    typedef struct _Docker_Image_{
-        QString m_id;
-        QString m_parentId;
-        QStringList m_repoTags;
-        ulong m_created;
-        ulong m_size;
-        ulong m_virtualSize;
-        int m_containers;
-    } DockerImage;
-
 
     class DockerImageListReply : public DockerReply
     {
@@ -26,7 +15,8 @@ namespace docker {
     public:
         DockerImageListReply(QNetworkReply *reply, QObject *parent = nullptr);
 
-        QVector<DockerImage> getImages() const;
+        bool hasImages() const;
+        QVector<DockerImage> images() const;
 
         // DockerReply interface
     private:
