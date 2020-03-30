@@ -1,16 +1,16 @@
-#include "DockerImage.h"
+#include "Image.h"
 
 #include <QJsonObject>
 #include <QJsonArray>
 
 
-docker::DockerImage::DockerImage()
+docker::Image::Image()
 {
 
 }
 
 
-docker::DockerImage::DockerImage(const QJsonObject &imageObject)
+docker::Image::Image(const QJsonObject &imageObject)
 {
     if (imageObject.contains("Containers")) {
         m_containers = imageObject["Containers"].toInt();
@@ -25,11 +25,15 @@ docker::DockerImage::DockerImage(const QJsonObject &imageObject)
     }
 
     if (imageObject.contains("Created")) {
-        m_created = imageObject["Created"].toString().toULong();
+        m_created = imageObject["Created"].toString().toULongLong();
     }
 
     if (imageObject.contains("Size")) {
-        m_size = imageObject["Size"].toString().toULong();
+        m_size = imageObject["Size"].toString().toULongLong();
+    }
+
+    if (imageObject.contains("VirtualSize")) {
+        m_virtualSize = imageObject["VirtualSize"].toString().toULongLong();
     }
 
     if (imageObject.contains("RepoTags")) {
@@ -41,47 +45,47 @@ docker::DockerImage::DockerImage(const QJsonObject &imageObject)
     }
 }
 
-QString docker::DockerImage::id() const
+QString docker::Image::id() const
 {
     return m_id;
 }
 
-QString docker::DockerImage::parentId() const
+QString docker::Image::parentId() const
 {
     return m_parentId;
 }
 
-QStringList docker::DockerImage::repoTags() const
+QStringList docker::Image::repoTags() const
 {
     return m_repoTags;
 }
 
-ulong docker::DockerImage::created() const
+qulonglong docker::Image::created() const
 {
     return m_created;
 }
 
-ulong docker::DockerImage::size() const
+qulonglong docker::Image::size() const
 {
     return m_size;
 }
 
-ulong docker::DockerImage::virtualSize() const
+qulonglong docker::Image::virtualSize() const
 {
     return m_virtualSize;
 }
 
-int docker::DockerImage::containers() const
+int docker::Image::containers() const
 {
     return m_containers;
 }
 
-bool docker::DockerImage::operator ==(const docker::DockerImage &dockerImage) const
+bool docker::Image::operator ==(const docker::Image &dockerImage) const
 {
     return m_id.compare(dockerImage.m_id) == 0;
 }
 
-QString docker::DockerImage::toString() const
+QString docker::Image::toString() const
 {
     QStringList strl;
 

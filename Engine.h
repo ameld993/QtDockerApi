@@ -10,19 +10,19 @@ class QNetworkAccessManager;
 
 namespace docker {
 
-    class DockerImageListReply;
+    class ImageListReply;
     class DockerReply;
 
     /**
      * @brief The DockerEngine class is a singelton
      */
-    class DockerEngine : public QObject
+    class Engine : public QObject
     {
         Q_OBJECT
-        QNetworkAccessManager *m_networkManager;
+        QNetworkAccessManager *m_networkManager {nullptr};
 
     public:
-        static DockerEngine* instance();
+        static Engine* instance();
 
         /**
          * @brief getContainerImages - https://docs.docker.com/engine/api/v1.40/#operation/ContainerList
@@ -43,7 +43,7 @@ namespace docker {
          * @brief getDockerImages
          * @return
          */
-        DockerImageListReply* getDockerImages(QUrlQuery query = QUrlQuery());
+        ImageListReply* getDockerImages(QUrlQuery query = QUrlQuery());
 
         /**
          * @brief executeGetReq
@@ -62,7 +62,7 @@ namespace docker {
         QNetworkReply *execureDelReq(const QNetworkRequest &req);
 
     private:
-        explicit DockerEngine(QObject *parent = nullptr);
+        explicit Engine(QObject *parent = nullptr);
 
     };
 

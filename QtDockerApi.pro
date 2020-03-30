@@ -1,6 +1,6 @@
 TEMPLATE = lib
 
-QT                  *= network
+QT                  *= network quick
 
 CONFIG              *= c++11
 
@@ -9,20 +9,20 @@ OBJECTS_DIR         = obj
 MOC_DIR             = moc
 
 HEADERS += \
-    DockerEngine.h \
-    DockerImage.h \
-    DockerImageList.h \
-    DockerImageListReply.h \
     DockerReply.h \
-    DockerRequestGenerator.h
+    DockerRequestGenerator.h \
+    Engine.h \
+    Image.h \
+    ImageListModel.h \
+    ImageListReply.h
 
 SOURCES += \
-    DockerEngine.cpp \
-    DockerImage.cpp \
-    DockerImageList.cpp \
-    DockerImageListReply.cpp \
     DockerReply.cpp \
-    DockerRequestGenerator.cpp
+    DockerRequestGenerator.cpp \
+    Engine.cpp \
+    Image.cpp \
+    ImageListModel.cpp \
+    ImageListReply.cpp
 
 unix{
     libs.path = /usr/local/lib

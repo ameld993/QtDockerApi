@@ -8,7 +8,7 @@ class QJsonObject;
 
 namespace docker {
         
-    class DockerImage
+    class Image
     {
         QString m_id {"none"};
         QString m_parentId {"none"};
@@ -19,20 +19,30 @@ namespace docker {
         int m_containers {0};
         
     public:
-        DockerImage();
-        DockerImage(const QJsonObject &imageObject);
+        enum Info {
+            IMAGE_ID = Qt::UserRole + 100,
+            IMAGE_PARENT_ID,
+            IMAGE_REPO_TAGS,
+            IMAGE_CREATED,
+            IMAGE_SIZE,
+            IMAGE_VIRTUAL_SIZE,
+            IMAGE_CONTAINERS
+        };
+
+        Image();
+        Image(const QJsonObject &imageObject);
 
         QString id() const;
         QString parentId() const;
         
         QStringList repoTags() const;
-        ulong created() const;
-        ulong size() const;
-        ulong virtualSize() const;
+        qulonglong created() const;
+        qulonglong size() const;
+        qulonglong virtualSize() const;
         
         int containers() const;
         
-        bool operator ==(const DockerImage &dockerImage) const;
+        bool operator ==(const Image &dockerImage) const;
 
         QString toString() const;
     };

@@ -1,6 +1,6 @@
-#include "DockerEngine.h"
+#include "Engine.h"
 #include "DockerReply.h"
-#include "DockerImageListReply.h"
+#include "ImageListReply.h"
 #include "DockerRequestGenerator.h"
 
 #include <QNetworkReply>
@@ -9,10 +9,10 @@
 #include <QNetworkAccessManager>
 
 namespace docker {
-    static DockerEngine* _Static_Docker_Engine_ = nullptr;
+    static Engine* _Static_Docker_Engine_ = nullptr;
 }
 
-docker::DockerEngine::DockerEngine(QObject *parent) : QObject(parent)
+docker::Engine::Engine(QObject *parent) : QObject(parent)
 {
     m_networkManager = new QNetworkAccessManager(this);
 
@@ -23,24 +23,24 @@ docker::DockerEngine::DockerEngine(QObject *parent) : QObject(parent)
     });
 }
 
-docker::DockerEngine *docker::DockerEngine::instance()
+docker::Engine *docker::Engine::instance()
 {
     if (_Static_Docker_Engine_ == nullptr) {
-        _Static_Docker_Engine_ = new DockerEngine;
+        _Static_Docker_Engine_ = new Engine;
     }
 
     return _Static_Docker_Engine_;
 }
 
 
-docker::DockerReply* docker::DockerEngine::getContainers(QUrlQuery query)
+docker::DockerReply* docker::Engine::getContainers(QUrlQuery query)
 {
 
     return new DockerReply(executeGetReq(docker::getContainterList(query)));
 }
 
 
-docker::DockerReply *docker::DockerEngine::createContainer(const QString &name, QByteArray bodyReq)
+docker::DockerReply *docker::Engine::createContainer(const QString &name, QByteArray bodyReq)
 {
     QUrlQuery query;
     query.addQueryItem("name", name);
@@ -49,13 +49,13 @@ docker::DockerReply *docker::DockerEngine::createContainer(const QString &name, 
 }
 
 
-docker::DockerImageListReply* docker::DockerEngine::getDockerImages(QUrlQuery query)
+docker::ImageListReply* docker::Engine::getDockerImages(QUrlQuery query)
 {
-    return new DockerImageListReply(executeGetReq(docker::getImageList(query)));
+    return new ImageListReply(executeGetReq(docker::getImageList(query)));
 }
 
 
-QNetworkReply* docker::DockerEngine::executeGetReq(const QNetworkRequest &req)
+QNetworkReply* docker::Engine::executeGetReq(const QNetworkRequest &req)
 {
     if (m_networkManager == nullptr) {
         qDebug() << "[ERROR] - DockerEngine::executeGetReq NetworkAccessManager is NULL \n Initializing new NetowrkAccessManager";
@@ -70,7 +70,7 @@ QNetworkReply* docker::DockerEngine::executeGetReq(const QNetworkRequest &req)
 }
 
 
-QNetworkReply *docker::DockerEngine::executePosReq(const QNetworkRequest &req, QByteArray &posBody)
+QNetworkReply *docker::Engine::executePosReq(const QNetworkRequest &req, QByteArray &posBody)
 {
     if (m_networkManager == nullptr) {
         qDebug() << "[ERROR] - DockerEngine::executePosReq NetworkAccessManager is NULL \n Initializing new NetowrkAccessManager";
@@ -85,7 +85,7 @@ QNetworkReply *docker::DockerEngine::executePosReq(const QNetworkRequest &req, Q
 }
 
 
-QNetworkReply *docker::DockerEngine::execureDelReq(const QNetworkRequest &req)
+QNetworkReply *docker::Engine::execureDelReq(const QNetworkRequest &req)
 {
     return m_networkManager->deleteResource(req);
 }

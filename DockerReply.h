@@ -30,7 +30,7 @@ namespace docker {
 
     protected:
         QString m_errorString;
-        int m_statusCode;
+        int m_statusCode {0};
 
         QByteArray m_data;
     };

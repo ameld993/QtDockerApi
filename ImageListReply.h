@@ -2,21 +2,21 @@
 #define DOCKERIMAGELISTREPLY_H
 
 #include "DockerReply.h"
-#include "DockerImage.h"
+#include "Image.h"
 
 #include <QVector>
 
 namespace docker {
 
-    class DockerImageListReply : public DockerReply
+    class ImageListReply : public DockerReply
     {
         Q_OBJECT
-        QVector<DockerImage> m_images;
+        QVector<Image> m_images;
     public:
-        DockerImageListReply(QNetworkReply *reply, QObject *parent = nullptr);
+        ImageListReply(QNetworkReply *reply, QObject *parent = nullptr);
 
         bool hasImages() const;
-        QVector<DockerImage> images() const;
+        QVector<Image> images() const;
 
         // DockerReply interface
     private:
