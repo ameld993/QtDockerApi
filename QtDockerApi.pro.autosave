@@ -28,6 +28,8 @@ SOURCES += \
     src/ImageListModel.cpp \
     src/ImageListReply.cpp
 
+
+# --- make install ---
 unix{
     libs.path = /usr/local/lib
     libs.files = $$OUT_PWD/lib/*
