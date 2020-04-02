@@ -47,7 +47,8 @@ void docker::ContainerListReply::onReplyReceived()
             continue;
         }
 
-        Container container = array.at(i).toObject();
+        QJsonObject obj = array.at(i).toObject();
+        Container container(obj);
         m_containers << container;
     }
 }

@@ -147,18 +147,11 @@ void docker::ImageListModel::updateImageList()
 {
     Engine *dockerEngine = Engine::instance();
 
-    QUrlQuery query;
-    query.addQueryItem("all", m_all ? "true" : "false");
-    query.addQueryItem("digest", m_digest ? "true" : "false");
-
-    if (!m_filters.isEmpty()) {
-        query.addQueryItem("filters", m_filters);
-    }
-
+    QUrlQuery query = getUrlQuery();
     ImageListReply *reply = dockerEngine->getDockerImages(query);
 
     connect(reply, &ImageListReply::replyReceived, [=](){
-       QVector<Image> imageList = reply->images();
+       QList<Image> imageList = reply->images();
        updateList(imageList);
        reply->deleteLater();
     });
@@ -172,7 +165,7 @@ void docker::ImageListModel::updateImageList()
 }
 
 
-void docker::ImageListModel::updateList(const QVector<docker::Image> &list)
+void docker::ImageListModel::updateList(const QList<docker::Image> &list)
 {
     beginResetModel();
 
@@ -203,6 +196,20 @@ void docker::ImageListModel::updateList(const QVector<docker::Image> &list)
 }
 
 
+QUrlQuery docker::ImageListModel::getUrlQuery() const
+{
+    QUrlQuery query;
+    query.addQueryItem("all", m_all ? "true" : "false");
+    query.addQueryItem("digest", m_digest ? "true" : "false");
+
+    if (!m_filters.isEmpty()) {
+        query.addQueryItem("filters", m_filters);
+    }
+
+    return query;
+}
+
+
 QHash<int, QByteArray> docker::ImageListModel::roleNames() const
 {
     QHash<int, QByteArray> roleNames;
@@ -216,6 +223,7 @@ QHash<int, QByteArray> docker::ImageListModel::roleNames() const
 
     return roleNames;
 }
+
 
 void docker::ImageListModel::registerQml()
 {

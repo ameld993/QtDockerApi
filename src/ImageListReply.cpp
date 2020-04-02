@@ -20,7 +20,7 @@ bool docker::ImageListReply::hasImages() const
 }
 
 
-QVector<docker::Image> docker::ImageListReply::images() const
+QList<docker::Image> docker::ImageListReply::images() const
 {
     return m_images;
 }
@@ -49,6 +49,6 @@ void docker::ImageListReply::onReplyReceived()
         QJsonObject obj = array.at(i).toObject();
         Image image(obj);
 
-        m_images.push_back(image);
+        m_images << image;
     }
 }

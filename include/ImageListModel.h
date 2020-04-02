@@ -5,9 +5,13 @@
 
 #include <QAbstractListModel>
 #include <QTimer>
+#include <QUrlQuery>
 
 namespace docker {
 
+    /**
+     * @brief The ImageListModel class
+     */
     class ImageListModel : public QAbstractListModel
     {
         Q_OBJECT
@@ -57,13 +61,14 @@ namespace docker {
         void updateImageList();
 
     private slots:
-        void updateList(const QVector<Image> &list);
+        void updateList(const QList<Image> &list);
+        QUrlQuery getUrlQuery() const;
 
     private:
-        QTimer m_updateTimer;
+        QTimer m_updateTimer {};
         quint32 m_updateInterval {0};
 
-        QVector<Image> m_imageList;
+        QList<Image> m_imageList {};
 
         bool m_all {false};
         bool m_digest {false};
