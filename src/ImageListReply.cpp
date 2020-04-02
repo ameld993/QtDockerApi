@@ -4,9 +4,10 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QJsonObject>
-#include <QDebug>
 
-#include <iostream>
+#ifdef QT_DEBUG
+#include <QDebug>
+#endif
 
 docker::ImageListReply::ImageListReply(QNetworkReply *reply, QObject *parent) : DockerReply(reply, parent)
 {
@@ -39,7 +40,9 @@ void docker::ImageListReply::onReplyReceived()
 
     for (int i = 0; i < array.size(); i++) {
         if (!array.at(i).isObject()) {
+#ifdef QT_DEBUG
             qDebug() << "DockerImageListReply - why is this not an Objet?!!";
+#endif
             continue;
         }
 

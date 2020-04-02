@@ -11,6 +11,7 @@ class QNetworkAccessManager;
 namespace docker {
 
     class ImageListReply;
+    class ContainerListReply;
     class DockerReply;
 
     /**
@@ -29,7 +30,7 @@ namespace docker {
          * @param query: ["all" - boolean, "limit" -  integer , "size" - boolean, "filters" - string]
          * @return DockerReply
          */
-        DockerReply *getContainers(QUrlQuery query = QUrlQuery());
+        ContainerListReply *getContainers(QUrlQuery query = QUrlQuery());
 
         /**
          * @brief createContainer - https://docs.docker.com/engine/api/v1.40/#operation/ContainerCreate

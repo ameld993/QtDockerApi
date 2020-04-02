@@ -1,6 +1,7 @@
 #include "Engine.h"
 #include "DockerReply.h"
 #include "ImageListReply.h"
+#include "ContainerListReply.h"
 #include "DockerRequestGenerator.h"
 
 #include <QNetworkReply>
@@ -33,10 +34,9 @@ docker::Engine *docker::Engine::instance()
 }
 
 
-docker::DockerReply* docker::Engine::getContainers(QUrlQuery query)
+docker::ContainerListReply *docker::Engine::getContainers(QUrlQuery query)
 {
-
-    return new DockerReply(executeGetReq(docker::getContainterList(query)));
+    return new ContainerListReply(executeGetReq(docker::getContainterList(query)));
 }
 
 

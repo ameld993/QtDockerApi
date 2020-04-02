@@ -12,6 +12,7 @@ INCLUDEPATH += include
 
 HEADERS += \
     include/Container.h \
+    include/ContainerListReply.h \
     include/DockerReply.h \
     include/DockerRequestGenerator.h \
     include/Engine.h \
@@ -21,6 +22,7 @@ HEADERS += \
 
 SOURCES += \
     src/Container.cpp \
+    src/ContainerListReply.cpp \
     src/DockerReply.cpp \
     src/DockerRequestGenerator.cpp \
     src/Engine.cpp \
@@ -28,6 +30,8 @@ SOURCES += \
     src/ImageListModel.cpp \
     src/ImageListReply.cpp
 
+
+# --- make install ---
 unix{
     libs.path = /usr/local/lib
     libs.files = $$OUT_PWD/lib/*
